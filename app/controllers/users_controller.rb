@@ -22,8 +22,11 @@ class UsersController < ApplicationController
     
     begin 
      user_info = get_user_info(credentials)
+
      if user_info !=nil 
         puts "New Refesh Tooken 1"
+         puts YAML::dump(user_info)
+        session[:user_id] = user_info.id
         return credentials
      end  
     rescue
