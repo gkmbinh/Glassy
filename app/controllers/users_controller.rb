@@ -154,7 +154,7 @@ class UsersController < ApplicationController
       credentials = refesh_tooken()
       @mirror = MirrorClient.new(credentials)
 
-      @mirror.insert_subscription("01010010223", params[:subscriptionId], callback)
+      @mirror.insert_subscription(session[:user_id], params[:subscriptionId], callback)
 
       puts "Subscribed to #{params[:subscriptionId]} notifications."
     rescue
