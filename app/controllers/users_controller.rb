@@ -153,13 +153,13 @@ class UsersController < ApplicationController
 
       @mirror.insert_subscription("01010010223", params[:subscriptionId], callback)
 
-       puts "Subscribed to #{params[:subscriptionId]} notifications."
+      puts "Subscribed to #{params[:subscriptionId]} notifications."
     rescue
       puts "Could not subscribe because the application is not running as HTTPS."
     end
 
     redirect_to '/'
-     
+
   end 
 
   def notify_callback
