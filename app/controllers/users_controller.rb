@@ -8,45 +8,59 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
 
+  def refesh_tooken
+
+    session[:refresh_token] ='1/qecXGIQGg8UAYSvNmt37GK4HlUL4v2ber37z7xaNLo4'
+    #session[:access_token]= "ya29.1.AADtN_WS4-tE7XvjV2Z24pSnKcdCWbBPbqc61yAPGf426eD9JTJGNhQzYzlyFTo" 
+
+    hash = {
+          access_token:  session[:access_token].to_s,
+          refresh_token:  session[:refresh_token].to_s
+     }
+
+    credentials = Signet::OAuth2::Client.new(hash) 
+    
+    begin 
+     user_info = get_user_info(credentials)
+     if user_info !=nil 
+        puts "New Refesh Tooken 1"
+        return credentials
+     end  
+    rescue
+        credentials = refesh_auth_tooken(hash)  
+       if credentials.refresh_token !=nil
+        puts "New Refesh Tooken 2"
+        session[:access_token]=  credentials.access_token
+        session[:refresh_token] = credentials.refresh_token
+       end  
+       puts "New Refesh Tooken end"
+      return credentials
+    end 
+
+    return credentials
+ 
+  end 
+
   def index
+
+    #puts "l}#{request.ur"
+    #puts "#{request.protocol}#{request.host_with_port}"
+
     @users = User.all
 
     if session[:access_token]==nil 
       redirect_to get_authorization_url(nil, nil) 
+
     end
-
-    session[:refresh_token] ='1/qecXGIQGg8UAYSvNmt37GK4HlUL4v2ber37z7xaNLo4'
-    session[:access_token]= "ya29.1.AADtN_WS4-tE7XvjV2Z24pSnKcdCWbBPbqc61yAPGf426eD9JTJGNhQzYzlyFTo" 
-
-    hash = {
-            access_token:  session[:access_token].to_s,
-            refresh_token:  session[:refresh_token].to_s
-    } 
-
-    puts "session hash"
-    puts YAML::dump(hash)
-
-    credentials = Signet::OAuth2::Client.new(hash) 
     
-
-   # credentials = refesh_auth_tooken(hash)
-
-   # if credentials.refresh_token !=nil
-   #     puts "New Refesh Tooken"
-   #     session[:access_token]=  credentials.access_token
-   #     session[:refresh_token] = credentials.refresh_token
-   # end 
+    puts "-----"
+    credentials = refesh_tooken()
 
     puts YAML::dump(credentials)
 
-    puts "-----"
-      
-
-    @mirror = MirrorClient.new(credentials)
+    @mirror = MirrorClient.new(credentials) 
 
     puts "Lam gi thi lam de ..."
-
-    puts "Timeline Menu"
 
     if params[:menu]
 
@@ -124,12 +138,40 @@ class UsersController < ApplicationController
 
   end
 
+
+# subscriptionId : timeline , localtion
+  def  insert_subscription
+   # Called to insert a new subscription.
+    callback = "#{request.url}/notify-callback"
+    puts callback
+
+    begin
+
+      puts "-SUBSUB----"
+      credentials = refesh_tooken()
+      @mirror = MirrorClient.new(credentials)
+
+      @mirror.insert_subscription("01010010223", params[:subscriptionId], callback)
+
+       puts "Subscribed to #{params[:subscriptionId]} notifications."
+    rescue
+      puts "Could not subscribe because the application is not running as HTTPS."
+    end
+
+    redirect_to '/'
+     
+  end 
+
+  def notify_callback
+
+    render text: "notify_callback"
+  end 
+
   def oauth2callback
 
-    @users = User.all
+      @users = User.all
 
-    puts "Post Time line first" #4567
-
+     
       hash = {
             access_token:  session[:access_token].to_s,
             refresh_token:  session[:refresh_token].to_s
@@ -141,6 +183,11 @@ class UsersController < ApplicationController
           credentials = get_credentials(params[:code], nil)
           session[:access_token] = credentials.access_token
           session[:refresh_token] =  credentials.refresh_token
+
+          hash = {
+            access_token:  session[:access_token].to_s,
+            refresh_token:  session[:refresh_token].to_s
+          }
 
        else
           credentials = Signet::OAuth2::Client.new(hash)
