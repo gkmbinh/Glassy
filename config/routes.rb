@@ -4,9 +4,8 @@ Glassy::Application.routes.draw do
 
   get "users/insert_subscription" => "users#insert_subscription"
 
-  get "notify-callback" => "user#notify_callback"
   post "notify-callback" => "user#notify_callback"
-  
+
   get "oauth2callback"  => "users#oauth2callback"
   get "users/oauth2callback" => "users#oauth2callback"
 
