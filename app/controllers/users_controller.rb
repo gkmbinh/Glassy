@@ -7,7 +7,16 @@ class UsersController < ApplicationController
 
   # GET /users
   # GET /users.json
-
+=begin
+id: '112091486817290488127'
+2013-12-12T20:14:57.141345+00:00 app[web.1]:   name: Duy Huynh
+2013-12-12T20:14:57.141345+00:00 app[web.1]:   given_name: Duy
+2013-12-12T20:14:57.141345+00:00 app[web.1]:   family_name: Huynh
+2013-12-12T20:14:57.141345+00:00 app[web.1]:   link: https://plus.google.com/112091486817290488127
+2013-12-12T20:14:57.141345+00:00 app[web.1]:   gender: male
+2013-12-12T20:14:57.141345+00:00 app[web.1]:   locale: en
+ 
+=end 
   def refesh_tooken
 
     session[:refresh_token] ='1/qecXGIQGg8UAYSvNmt37GK4HlUL4v2ber37z7xaNLo4'
@@ -145,7 +154,7 @@ class UsersController < ApplicationController
 # subscriptionId : timeline , localtion
   def  insert_subscription
    # Called to insert a new subscription.
-    callback = "#{request.url}/notify-callback"
+    callback = "#{request.protocol}#{request.host_with_port}/notify-callback"
     puts callback
 
     begin
@@ -155,7 +164,6 @@ class UsersController < ApplicationController
       @mirror = MirrorClient.new(credentials)
 
       @mirror.insert_subscription(session[:user_id], params[:subscriptionId], callback)
-
       puts "Subscribed to #{params[:subscriptionId]} notifications."
     rescue
       puts "Could not subscribe because the application is not running as HTTPS."
