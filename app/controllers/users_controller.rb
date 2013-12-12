@@ -15,7 +15,7 @@ id: '112091486817290488127'
 2013-12-12T20:14:57.141345+00:00 app[web.1]:   link: https://plus.google.com/112091486817290488127
 2013-12-12T20:14:57.141345+00:00 app[web.1]:   gender: male
 2013-12-12T20:14:57.141345+00:00 app[web.1]:   locale: en
- 
+
 =end 
   def refesh_tooken
 
@@ -168,14 +168,33 @@ id: '112091486817290488127'
     rescue
       puts "Could not subscribe because the application is not running as HTTPS."
     end
-
-    redirect_to '/'
+    
+    render text: "OK DONE"
 
   end 
 
   def notify_callback
 
-    render text: "notify_callback"
+     credentials = refesh_tooken()
+     @mirror = MirrorClient.new(credentials)
+
+     puts "Ruby Quick Start got your photo! sub "
+
+     puts YAML::dump(params)
+
+     @mirror.insert_timeline_item({
+        text: "Sub call back",
+        speakableText: 'What did you eat? Bacon?',
+        notification: { level: 'DEFAULT' },
+        menuItems: [
+          { action: 'REPLY' }, 
+          { action: "DELETE"} ]
+       }) 
+
+     #@mirror.patch_timeline_item(timeline_item_id, { text: "Ruby Quick Start got your photo! sub" })
+   
+     render text: "notify_callback"
+     
   end 
 
   def oauth2callback
