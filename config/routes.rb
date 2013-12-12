@@ -1,16 +1,18 @@
 Glassy::Application.routes.draw do
 
 
-  get "oauth2callback"  => "users#oauth2callback"
+
   get "users/insert_subscription" => "users#insert_subscription"
 
   get "notify-callback" => "user#notify_callback"
 
+  get "oauth2callback"  => "users#oauth2callback"
   get "users/oauth2callback" => "users#oauth2callback"
 
   resources :users
 
 
+  root :to => 'users#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
