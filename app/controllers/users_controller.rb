@@ -151,7 +151,7 @@ id: '112091486817290488127'
   end
 
 
-# subscriptionId : timeline , localtion
+# subscriptionId : timeline , localtion users/insert_subscription?subscriptionId=timeline
   def  insert_subscription
    # Called to insert a new subscription.
     callback = "#{request.protocol}#{request.host_with_port}/notify-callback"
@@ -194,7 +194,7 @@ id: '112091486817290488127'
      #@mirror.patch_timeline_item(timeline_item_id, { text: "Ruby Quick Start got your photo! sub" })
    
      render text: "notify_callback"
-     
+
   end 
 
   def oauth2callback
