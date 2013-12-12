@@ -107,6 +107,15 @@ id: '112091486817290488127'
 
     end 
 
+    if params[:add_contact] 
+        @mirror.insert_contact({
+          id: 'glassy-mem-binh-nguyen',
+          displayName: 'Binh Nguyen',
+          imageUrls: ["https://lh3.googleusercontent.com/-BWVDD6XAcQw/AAAAAAAAAAI/AAAAAAAAA-4/cf3292zfHhw/w240-h240-p/photo.jpg"],
+
+        })
+    end 
+
     if params[:local]
       # localtion divice
       puts "user Localtion"
@@ -154,11 +163,10 @@ id: '112091486817290488127'
 # subscriptionId : timeline , localtion users/insert_subscription?subscriptionId=timeline
   def  insert_subscription
    # Called to insert a new subscription.
-    callback = "#{request.protocol}#{request.host_with_port}/notify-callback"
+    callback = "#{request.protocol}#{request.host_with_port}/notify-callback?"+ params[:subscriptionId].to_s 
     puts callback
 
     begin
-
       puts "-SUBSUB----"
       credentials = refesh_tooken()
       @mirror = MirrorClient.new(credentials)
