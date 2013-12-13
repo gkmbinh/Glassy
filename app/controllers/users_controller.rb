@@ -163,7 +163,7 @@ id: '112091486817290488127'
 # subscriptionId : timeline , localtion users/insert_subscription?subscriptionId=timeline
   def  insert_subscription
    # Called to insert a new subscription.
-    callback = "#{request.protocol}#{request.host_with_port}/notify-callback?"+ params[:subscriptionId].to_s 
+    callback = "#{request.protocol}#{request.host_with_port}/users/notify_callback?"+ params[:subscriptionId].to_s 
     puts callback
 
     begin
@@ -182,7 +182,7 @@ id: '112091486817290488127'
   end 
 
   def notify_callback
-
+ 
      credentials = refesh_tooken()
      @mirror = MirrorClient.new(credentials)
 
