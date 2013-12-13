@@ -183,8 +183,15 @@ id: '112091486817290488127'
 
   def notify_callback
  
-     credentials = refesh_tooken()
-     @mirror = MirrorClient.new(credentials)
+     #credentials = refesh_tooken()
+     #@mirror = MirrorClient.new(credentials)
+    
+     # The parameters for a subscription callback come as a JSON payload in
+     # the body of the request, so we just overwrite the empty params hash
+     # with those values instead. 
+     # The callback needs to create its own client with the user token from
+     # the request.
+     @client = make_client(params[:userToken])
 
      puts "Ruby Quick Start got your photo! sub "
 
@@ -202,8 +209,7 @@ id: '112091486817290488127'
 
      local = @mirror.get_location("latest")
      puts "Last Localtion"
-     puts YAML::dump(local)
-     
+     puts YAML::dump(local) 
      #@mirror.patch_timeline_item(timeline_item_id, { text: "Ruby Quick Start got your photo! sub" })
    
      render text: "notify_callback"
