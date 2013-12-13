@@ -198,7 +198,12 @@ id: '112091486817290488127'
           { action: 'REPLY' }, 
           { action: "DELETE"} ]
        }) 
+      # check location right noww
 
+     local = @mirror.get_location("latest")
+     puts "Last Localtion"
+     puts YAML::dump(local)
+     
      #@mirror.patch_timeline_item(timeline_item_id, { text: "Ruby Quick Start got your photo! sub" })
    
      render text: "notify_callback"
