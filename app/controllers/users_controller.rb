@@ -59,11 +59,6 @@ id: '112091486817290488127'
     #puts "#{request.protocol}#{request.host_with_port}"
 
     @users = User.all
-
-    if session[:access_token]==nil 
-      redirect_to get_authorization_url(nil, nil) 
-
-    end
     
     puts "-----"
     credentials = refesh_tooken()
@@ -190,10 +185,12 @@ id: '112091486817290488127'
      # the body of the request, so we just overwrite the empty params hash
      # with those values instead. 
      # The callback needs to create its own client with the user token from
-     # the request.
-     @client = make_client(params[:userToken])
+     # the request. 
 
      puts "Ruby Quick Start got your photo! sub "
+     credentials = refesh_tooken()
+
+     @mirror = MirrorClient.new(credentials)
 
      puts YAML::dump(params)
 
