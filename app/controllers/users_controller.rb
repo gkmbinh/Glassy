@@ -19,7 +19,7 @@ id: '112091486817290488127'
 =end 
   def refesh_tooken
 
-    session[:refresh_token] ='1/qecXGIQGg8UAYSvNmt37GK4HlUL4v2ber37z7xaNLo4'
+    
     #session[:access_token]= "ya29.1.AADtN_WS4-tE7XvjV2Z24pSnKcdCWbBPbqc61yAPGf426eD9JTJGNhQzYzlyFTo" 
 
     hash = {
@@ -59,6 +59,10 @@ id: '112091486817290488127'
     #puts "#{request.protocol}#{request.host_with_port}"
 
     @users = User.all
+
+    if session[:access_token]==nil 
+      redirect_to get_authorization_url(nil, nil) 
+    end
     
     puts "-----"
     credentials = refesh_tooken()
