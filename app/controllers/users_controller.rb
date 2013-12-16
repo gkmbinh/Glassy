@@ -18,6 +18,8 @@ id: '112091486817290488127'
 =end 
   def refesh_tooken
     #session[:access_token]= "ya29.1.AADtN_WS4-tE7XvjV2Z24pSnKcdCWbBPbqc61yAPGf426eD9JTJGNhQzYzlyFTo" 
+    session[:refesh_tooken] ='1/a0B41JYBu0uw-S8hTZ7FrYxRAeuSMYhLsStDPlxnBqM'
+    
     hash = {
           access_token:  session[:access_token].to_s,
           refresh_token:  session[:refresh_token].to_s
