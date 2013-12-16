@@ -5,8 +5,8 @@ require './app/models/oauth_utils'
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
-  # GET /users
-  # GET /users.json
+# GET /users
+# GET /users.json
 =begin
 id: '112091486817290488127'
 2013-12-12T20:14:57.141345+00:00 app[web.1]:   name: Duy Huynh
@@ -15,13 +15,9 @@ id: '112091486817290488127'
 2013-12-12T20:14:57.141345+00:00 app[web.1]:   link: https://plus.google.com/112091486817290488127
 2013-12-12T20:14:57.141345+00:00 app[web.1]:   gender: male
 2013-12-12T20:14:57.141345+00:00 app[web.1]:   locale: en
-
 =end 
   def refesh_tooken
-
-    
     #session[:access_token]= "ya29.1.AADtN_WS4-tE7XvjV2Z24pSnKcdCWbBPbqc61yAPGf426eD9JTJGNhQzYzlyFTo" 
-
     hash = {
           access_token:  session[:access_token].to_s,
           refresh_token:  session[:refresh_token].to_s
@@ -60,8 +56,9 @@ id: '112091486817290488127'
 
     @users = User.all
 
-    if session[:access_token]==nil 
-      redirect_to get_authorization_url(nil, nil) 
+    if params[:tooken]=='refresh'
+      redirect_to get_authorization_url(nil, nil)
+      return
     end
     
     puts "-----"
